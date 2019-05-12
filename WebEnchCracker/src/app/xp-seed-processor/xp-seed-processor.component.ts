@@ -26,8 +26,10 @@ export class XpSeedProcessorComponent {
    * @param bookshelves number of bookshelves from 0 to 15
    * @returns a number between 1 to 30
    */
-  getEnchantability(jRandom: object, bookshelves: number): number {
-    return 0;
+  getEnchantability(jRandom: Random, bookshelves: number): number {
+    const first = jRandom.nextInt(8);
+    const second = jRandom.nextInt(bookshelves + 1);
+    return first + 1 + (bookshelves >> 1) + second;
   }
 
   /**
