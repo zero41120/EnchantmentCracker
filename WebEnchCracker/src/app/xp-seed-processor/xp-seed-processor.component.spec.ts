@@ -1,6 +1,7 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { XpSeedProcessorComponent } from './xp-seed-processor.component';
+import { Slot } from './Slot';
 
 describe('XpSeedProcessorComponent', () => {
   beforeEach(async(() => {
@@ -51,6 +52,28 @@ describe('XpSeedProcessorComponent', () => {
         result = comp.getEnchantability(testRng, index);
         expect(result).toEqual(controlResult);
       });
+    });
+
+    it('should give correct slot value', () => {
+      spyOn(comp, 'getEnchantability').and.returnValue(12);
+      const dummyRan = new Random();
+
+      let bookshelves = 0;
+      const controlResults = [4, 8, 12];
+      const results = [
+        comp.getDisplayLevel(dummyRan, bookshelves, Slot.First),
+        comp.getDisplayLevel(dummyRan, bookshelves, Slot.Second),
+        comp.getDisplayLevel(dummyRan, bookshelves, Slot.Third),
+      ];
+      for (let i = 0; i < controlResults.length; i++) {
+        expect(results[i]).toEqual(controlResults[i]);
+      }
+
+      bookshelves = 12;
+      const controlResult = 24;
+      const result = comp.getDisplayLevel(dummyRan, bookshelves, Slot.Third);
+      expect(result).toEqual(controlResult);
+
     });
   });
 });

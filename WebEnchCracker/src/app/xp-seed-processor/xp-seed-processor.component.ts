@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Random    } from 'java-random';
+import { Slot      } from './Slot';
 
 @Component({
   selector: 'app-xp-seed-processor',
@@ -36,12 +37,20 @@ export class XpSeedProcessorComponent {
    * This function should give the display level number of a given
    * slot on the Minecraft enchanting table using a given Java Random typed
    * object and bookshelves count.
+   * @param jRandom a implementation of Java Random typed object
    * @param bookshelves number of bookshelves from 0 to 15
-   * @param slot index of the slot from 0 to 2
+   * @param slot a Slot enum type indicate index of slot
    * @returns 1 to 30 base on the given slot and bookshelves.
    */
-  getDisplayLevel(bookshelves: number, slot: number): number {
-    return 0;
+  getDisplayLevel(jRandom: Random, bookshelves: number, slot: Slot): number {
+    let base = this.getEnchantability(jRandom, bookshelves);
+    const doubleBook = bookshelves * 2;
+    switch (+slot) {
+      case Slot.First:  base = base / 3; break;
+      case Slot.Second: base = base * 2 / 3; break;
+      case Slot.Third:  base = Math.max(base, doubleBook); break;
+    }
+    return Math.floor(Math.max(base, 1));
   }
 
   /**
